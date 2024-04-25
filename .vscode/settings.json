@@ -1,0 +1,15 @@
+{
+    "i18n-ally.localesPaths": [
+        "build_electron/plugins/i18n",
+        "electron/plugins/i18n",
+        "package_electron/linux-unpacked/locales",
+        "src/components/messages",
+        "src/plugins/i18n",
+        "package_electron/__appImage-x64/locales",
+        "build_electron/plugins/i18n/locales",
+        "electron/plugins/i18n/locales",
+        "src/components/lists/messages",
+        "src/helpers/formatters/i18n",
+        "src/plugins/i18n/locales"
+    ]
+}
