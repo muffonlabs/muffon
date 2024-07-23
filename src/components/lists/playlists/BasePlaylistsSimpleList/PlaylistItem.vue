@@ -41,6 +41,7 @@
           <BasePrivateIcon
             v-if="isPrivate"
             class="right small"
+            model="playlist"
           />
         </div>
 
@@ -68,6 +69,22 @@
           class="description"
           icon="track"
           :count="tracksCount"
+        />
+      </div>
+
+      <div
+        v-if="isImport"
+        class="middle-aligned main-right-small-section main-left-small-section"
+      >
+        <BaseCheckbox
+          :is-checked="isPrivate"
+          @click.stop
+          @is-checked-change="handleIsPrivateIsCheckedChange"
+        />
+
+        <BasePrivateIcon
+          class="small"
+          model="playlist"
         />
       </div>
 
@@ -139,6 +156,7 @@ import BasePlaylistOptionsPopup
 import BaseClearButton from '@/components/buttons/BaseClearButton.vue'
 import BaseTracksSimpleList
   from '@/components/lists/tracks/BaseTracksSimpleList.vue'
+import BaseCheckbox from '@/components/BaseCheckbox.vue'
 import {
   main as formatProfileLink,
   playlist as formatProfilePlaylistLink
@@ -161,7 +179,8 @@ export default {
     BaseCreatedSection,
     BasePlaylistOptionsPopup,
     BaseClearButton,
-    BaseTracksSimpleList
+    BaseTracksSimpleList,
+    BaseCheckbox
   },
   provide () {
     return {
@@ -170,6 +189,9 @@ export default {
   },
   inject: {
     findPaginationItem: {
+      default: () => false
+    },
+    updateCollectionItem: {
       default: () => false
     }
   },
@@ -191,7 +213,8 @@ export default {
     isWithClearButton: Boolean,
     isWithModelIcon: Boolean,
     isWithSource: Boolean,
-    isWithTracks: Boolean
+    isWithTracks: Boolean,
+    isImport: Boolean
   },
   emits: [
     'linkClick',
@@ -324,6 +347,13 @@ export default {
     ) {
       this.isMainLinkActive = !value
     },
+    handleIsPrivateIsCheckedChange (
+      value
+    ) {
+      this.changePrivate(
+        value
+      )
+    },
     setPlaylistData (
       value
     ) {
@@ -337,6 +367,21 @@ export default {
 
       this.isShowTracksList =
         !this.isShowTracksList
+    },
+    changePrivate (
+      value
+    ) {
+      this.paginationItem.private = value
+
+      this.updateCollectionItem(
+        {
+          collection: 'successPlaylists',
+          uuid: this.uuid,
+          data: {
+            private: value
+          }
+        }
+      )
     }
   }
 }
